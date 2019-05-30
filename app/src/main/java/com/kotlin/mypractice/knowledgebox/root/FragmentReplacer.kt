@@ -7,15 +7,10 @@ interface RootRoutingLogic {
     fun replaceToContentsListFragment()
 }
 
-interface RootDataPassing {
-    var rootDataStore: RootDataStore
-}
-
-interface FragmentReplacerInterface : RootRoutingLogic, RootDataPassing
+interface FragmentReplacerInterface : RootRoutingLogic
 
 class FragmentReplacer : FragmentReplacerInterface {
     lateinit var mActivity: RootActivity
-    override lateinit var rootDataStore: RootDataStore
 
     override fun replaceToContentsListFragment() {
         val fragment = ContentsListFragment()

@@ -19,7 +19,7 @@ interface RootActivityListener {
     fun onBackPressed()
 }
 
-interface RootDisplayLogic
+interface RootFragment
 
 class RootActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mFragmentReplacer: FragmentReplacerInterface
@@ -71,12 +71,12 @@ class RootActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (layout_nav_drawer.isDrawerOpen(GravityCompat.START)) {
+        if (layout_nav_drawer.isDrawerVisible(GravityCompat.START)) {
             layout_nav_drawer.closeDrawer(GravityCompat.START)
         } else {
-            (supportFragmentManager.fragments.last() as? RootActivityListener)?.run {
-                onBackPressed()
-            } ?: moveTaskToBack(true)
+            var fragment = supportFragmentManager.fragments.last()
+            (fragment as? RootFragment)?.run { super.onBackPressed() }
+            (fragment as? RootActivityListener)?.run { onBackPressed() } ?: moveTaskToBack(true)
         }
     }
 
@@ -93,9 +93,7 @@ class RootActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             com.kotlin.mypractice.knowledgebox.R.string.navigation_drawer_close
         ) {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-                val child: View? = layout_nav_drawer.focusedChild
-                child?.clearFocus()
-
+                layout_nav_drawer.focusedChild?.clearFocus()
                 inputMethodManager!!.hideSoftInputFromWindow(
                     drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS
                 )
@@ -106,6 +104,7 @@ class RootActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         layout_nav_drawer.addDrawerListener(toggle)
         toggle.syncState()
+
         layout_nav_view.setNavigationItemSelectedListener(this)
 
         layout_all_delete_button.setOnClickListener { view ->

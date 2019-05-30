@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kotlin.mypractice.knowledgebox.R
+import com.kotlin.mypractice.knowledgebox.root.RootFragment
 
 interface DisplayLogic {
     fun displayNewsHandlers(viewModel: ContentsList.FetchContents.ViewModel)
 }
 
-class ContentsListFragment : Fragment(), DisplayLogic {
+class ContentsListFragment : Fragment(), DisplayLogic, RootFragment {
     private lateinit var mInteractor: BusinessLogic
     private lateinit var mFragmentReplacer: FragmentReplacerInterface
 
