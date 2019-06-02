@@ -1,11 +1,11 @@
 package com.kotlin.mypractice.knowledgebox.stepone.scenes.contentslist
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kotlin.mypractice.knowledgebox.R
 import com.kotlin.mypractice.knowledgebox.root.RootFragment
+import kotlinx.android.synthetic.main.fragment_contents_list.view.*
+import kotlinx.android.synthetic.main.list_item_content.view.*
 
 interface DisplayLogic {
     fun displayNewsHandlers(viewModel: ContentsList.FetchContents.ViewModel)
@@ -60,7 +62,7 @@ class ContentsListFragment : Fragment(), DisplayLogic, RootFragment {
     }
 
     private fun setupViews(view: View) {
-        mTotalTextView = view.findViewById(R.id.text_view_total) as TextView
+        mTotalTextView = view.text_view_total
 
         (view.findViewById(R.id.button_add) as Button).run {
             setOnClickListener {
@@ -84,12 +86,7 @@ class ContentsListFragment : Fragment(), DisplayLogic, RootFragment {
         mListView.adapter = NewsHandlerAdapter(viewModel.newsHandlers)
     }
 
-    inner class NewsHandlerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var categoryImageView: ImageView = view.findViewById(R.id.image_news_type) as ImageView
-        var nameTextView: TextView = view.findViewById(R.id.text_view_name) as TextView
-        var editButton: Button = (view.findViewById(R.id.button_edit) as Button)
-        var showButton: Button = (view.findViewById(R.id.button_show) as Button)
-    }
+    inner class NewsHandlerViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class NewsHandlerAdapter(private val newsHandlers: List<ContentsList.ContentsViewModel>) :
         RecyclerView.Adapter<NewsHandlerViewHolder>() {
@@ -103,19 +100,27 @@ class ContentsListFragment : Fragment(), DisplayLogic, RootFragment {
 
         override fun onBindViewHolder(holder: NewsHandlerViewHolder, position: Int) {
             val newsHandler = newsHandlers[position]
+            val view: View = holder.itemView
 
             holder.run {
-                categoryImageView.setImageResource(newsHandler.iconRId)
-                nameTextView.text = newsHandler.name
+                animateAlpha(view.layout_list_item)
+                view.image_news_type.setImageResource(newsHandler.iconRId)
+                view.text_view_name.text = newsHandler.name
 
-                editButton.setOnClickListener {
+                view.button_edit.setOnClickListener {
                     mFragmentReplacer.replaceToCreateContentFragment(newsHandler.newsHandlerId)
                 }
 
-                showButton.setOnClickListener {
+                view.button_show.setOnClickListener {
                     mFragmentReplacer.replaceToShowDetailsFragment(newsHandler.newsHandlerId)
                 }
             }
+        }
+
+        private fun animateAlpha(target: View) {
+            val objectAnimator = ObjectAnimator.ofFloat( target, "alpha", 0f, 1f )
+            objectAnimator.setDuration(500)
+            objectAnimator.start()
         }
 
         override fun getItemCount(): Int {

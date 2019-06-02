@@ -1,5 +1,6 @@
 package com.kotlin.mypractice.knowledgebox.root
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
@@ -11,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.kotlin.mypractice.knowledgebox.R
 import kotlinx.android.synthetic.main.activity_root.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-
 
 interface RootActivityListener {
     fun onBackPressed()
@@ -33,36 +34,39 @@ class RootActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.kotlin.mypractice.knowledgebox.R.layout.activity_root)
+        setContentView(R.layout.activity_root)
 
         setupActionBar()
         mFragmentReplacer.replaceToContentsListFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(com.kotlin.mypractice.knowledgebox.R.menu.main, menu)
+        menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            com.kotlin.mypractice.knowledgebox.R.id.action_settings -> true
+            R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            com.kotlin.mypractice.knowledgebox.R.id.nav_step_one -> {
+            R.id.nav_step_one -> {
+                layout_all_delete_button.visibility = View.VISIBLE
                 mFragmentReplacer.replaceToContentsListFragment()
             }
-            com.kotlin.mypractice.knowledgebox.R.id.nav_step_two -> {
+            R.id.nav_step_two -> {
+                layout_all_delete_button.visibility = View.GONE
+                mFragmentReplacer.replaceToImageViewerFragment()
+            }
+            R.id.nav_step_three -> {
 
             }
-            com.kotlin.mypractice.knowledgebox.R.id.nav_step_three -> {
-
-            }
-            com.kotlin.mypractice.knowledgebox.R.id.nav_step_four -> {
+            R.id.nav_step_four -> {
 
             }
         }
@@ -89,8 +93,8 @@ class RootActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this,
             layout_nav_drawer,
             layout_toolbar,
-            com.kotlin.mypractice.knowledgebox.R.string.navigation_drawer_open,
-            com.kotlin.mypractice.knowledgebox.R.string.navigation_drawer_close
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         ) {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 layout_nav_drawer.focusedChild?.clearFocus()

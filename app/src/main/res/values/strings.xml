@@ -8,8 +8,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="nav_step_one">List and Database</string>
-    <string name="nav_step_two">Server sync :TODO</string>
-    <string name="nav_step_three">Animation :TODO</string>
+    <string name="nav_step_two">Image Viewer</string>
+    <string name="nav_step_three">Server Sync :TODO</string>
     <string name="nav_step_four">Other :TODO</string>
 
     <string name="total">Total</string>

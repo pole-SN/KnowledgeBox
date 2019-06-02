@@ -15,9 +15,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.kotlin.mypractice.knowledgebox.R
 import com.kotlin.mypractice.knowledgebox.root.RootActivityListener
 import com.kotlin.mypractice.knowledgebox.stepone.models.Category
 import com.kotlin.mypractice.knowledgebox.stepone.scenes.createcontent.*
+import kotlinx.android.synthetic.main.fragment_create_newshandler.view.*
 
 
 interface DisplayLogic {
@@ -35,19 +37,19 @@ class CreateContentFragment : Fragment(), DisplayLogic, RootActivityListener,
     private lateinit var mCategoryRadioGroup: RadioGroup
 
     enum class CategoryRadioButtonRId(val category: Category, val rId: Int) {
-        ANDROID(Category.ANDROID, com.kotlin.mypractice.knowledgebox.R.id.radio_button_android),
-        SHOPPING(Category.SHOPPING, com.kotlin.mypractice.knowledgebox.R.id.radio_button_shopping),
-        MUSIC(Category.MUSIC, com.kotlin.mypractice.knowledgebox.R.id.radio_button_music),
-        PETS(Category.PETS, com.kotlin.mypractice.knowledgebox.R.id.radio_button_pets),
-        TRAVEL(Category.TRAVEL, com.kotlin.mypractice.knowledgebox.R.id.radio_button_travel);
+        ANDROID(Category.ANDROID, R.id.radio_button_android),
+        SHOPPING(Category.SHOPPING, R.id.radio_button_shopping),
+        MUSIC(Category.MUSIC, R.id.radio_button_music),
+        PETS(Category.PETS, R.id.radio_button_pets),
+        TRAVEL(Category.TRAVEL, R.id.radio_button_travel);
 
         companion object {
             fun from(category: Category): CategoryRadioButtonRId? {
-                return CategoryRadioButtonRId.values().find { it.category == category }
+                return values().find { it.category == category }
             }
 
             fun from(rId: Int): CategoryRadioButtonRId? {
-                return CategoryRadioButtonRId.values().find { it.rId == rId }
+                return values().find { it.rId == rId }
             }
         }
     }
@@ -75,11 +77,7 @@ class CreateContentFragment : Fragment(), DisplayLogic, RootActivityListener,
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        return inflater.inflate(
-            com.kotlin.mypractice.knowledgebox.R.layout.fragment_create_newshandler,
-            container,
-            false
-        )
+        return inflater.inflate(R.layout.fragment_create_newshandler, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,24 +87,21 @@ class CreateContentFragment : Fragment(), DisplayLogic, RootActivityListener,
     }
 
     private fun setupViews(view: View) {
-        mDeleteButton =
-            (view.findViewById(com.kotlin.mypractice.knowledgebox.R.id.button_delete) as Button).apply {
-                setOnClickListener {
-                    mFragmentReplacer.showDeleteContentDialogFragment()
-                }
-                visibility = View.GONE
+        mDeleteButton = (view.button_delete as Button).apply {
+            setOnClickListener {
+                mFragmentReplacer.showDeleteContentDialogFragment()
             }
+            visibility = View.GONE
+        }
 
-        (view.findViewById(com.kotlin.mypractice.knowledgebox.R.id.button_save) as Button).run {
+        (view.button_save as Button).run {
             setOnClickListener {
                 updateNewsHandler()
             }
         }
 
-        mNameEditText =
-            view.findViewById(com.kotlin.mypractice.knowledgebox.R.id.edit_text_title) as EditText
-        mCategoryRadioGroup =
-            view.findViewById(com.kotlin.mypractice.knowledgebox.R.id.radio_group_category) as RadioGroup
+        mNameEditText = view.edit_text_title
+        mCategoryRadioGroup = view.radio_group_category
     }
 
     override fun onBackPressed() {
@@ -143,7 +138,8 @@ class CreateContentFragment : Fragment(), DisplayLogic, RootActivityListener,
 
     private fun updateNewsHandler() {
         val name = mNameEditText.text.toString()
-        val category = CategoryRadioButtonRId.from(mCategoryRadioGroup.checkedRadioButtonId)?.category
+        val category =
+            CategoryRadioButtonRId.from(mCategoryRadioGroup.checkedRadioButtonId)?.category
         val newsHandler = CreateContent.ContentsViewModel(
             name,
             category
@@ -181,8 +177,8 @@ class CreateNewsHandlerSavedDialogFragment : DialogFragment() {
         isCancelable = false
 
         return AlertDialog.Builder(requireContext())
-            .setMessage(com.kotlin.mypractice.knowledgebox.R.string.message_save_success)
-            .setPositiveButton(com.kotlin.mypractice.knowledgebox.R.string.ok) { _, _ ->
+            .setMessage(R.string.message_save_success)
+            .setPositiveButton(R.string.ok) { _, _ ->
                 listener.onSavedDialogOkClick()
             }
             .create()
