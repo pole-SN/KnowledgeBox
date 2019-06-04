@@ -112,7 +112,7 @@ class ImageViewerFragment : Fragment(), RootFragment, View.OnTouchListener {
             val translationY =
                 if ((mRawX == 0F) && (mRawY == 0F)) mMoveY else mMoveY - (mRawY - e2.rawY)
 
-            adjustTranslation(translationX, translationY)
+            viewTranslation(translationX, translationY)
 
             mRawX = e2.rawX
             mRawY = e2.rawY
@@ -130,13 +130,13 @@ class ImageViewerFragment : Fragment(), RootFragment, View.OnTouchListener {
             mScaleVariableImageWidth = mFixedDefaultImageWidth * mScaleFactor
             mScaleVariableImageHeight = mFixedDefaultImageWidth * mScaleFactor
 
-            adjustTranslation(mMoveX, mMoveY)
+            viewTranslation(mMoveX, mMoveY)
 
             return true
         }
     }
 
-    private fun adjustTranslation(translationX: Float, translationY: Float) {
+    private fun viewTranslation(translationX: Float, translationY: Float) {
         val translationXMargin = Math.abs((mScaleVariableImageWidth - mImageViewWidth) / 2)
         val translationYMargin = Math.abs((mScaleVariableImageHeight - mImageViewHeight) / 2)
 
